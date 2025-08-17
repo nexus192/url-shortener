@@ -17,9 +17,11 @@ import (
 )
 
 func main() {
+
 	repo := repository.NewInMemoryRepo()
 	svc := service.NewURLService(repo)
 	h := handler.New(svc, shortener.GenerateID)
+
 	webHandler := web.NewWebHandler(svc, shortener.GenerateID)
 
 	r := chi.NewRouter()
