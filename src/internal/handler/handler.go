@@ -4,17 +4,18 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"url-shortener/internal/service"
+	"url-shortener/internal/domain/service"
 
 	"github.com/go-chi/chi/v5"
 )
 
 type Handler struct {
-	svc *service.Service
+	svc        *service.URLService
+	generateID func() string
 }
 
-func New(svc *service.Service) *Handler {
-	return &Handler{svc: svc}
+func New(svc *service.URLService, generateID func() string) *Handler {
+	return &Handler{svc: svc, generateID: generateID}
 }
 
 func (h *Handler) ShortenURL(w http.ResponseWriter, r *http.Request) {
@@ -26,7 +27,7 @@ func (h *Handler) ShortenURL(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := h.svc.Shorten(req.URL)
+	id, err := h.svc.Shorten(req.URL, h.generateID)
 	if err != nil {
 		http.Error(w, "failed to shorten url", http.StatusInternalServerError)
 		return

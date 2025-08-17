@@ -1,11 +1,6 @@
 package repository
 
-import "url-shortener/internal/model"
-
-type Repository interface {
-	Save(url model.URL) error
-	Find(id string) (model.URL, bool)
-}
+import "url-shortener/internal/domain/model"
 
 type InMemoryRepo struct {
 	data map[string]model.URL
