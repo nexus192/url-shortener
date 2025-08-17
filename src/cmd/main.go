@@ -1,11 +1,11 @@
 package main
 
 import (
-	"log"
-	_ "log/slog"
+	"log/slog"
 	"net/http"
-	"time"
+	"os"
 
+	"url-shortener/config"
 	"url-shortener/internal/data/repository"
 	"url-shortener/internal/domain/service"
 	"url-shortener/internal/handler"
@@ -13,10 +13,22 @@ import (
 	"url-shortener/pkg/shortener"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/chi/v5/middleware"
+)
+
+const (
+	envLocal = "local"
+	envDev   = "dev"
+	envProd  = "prod"
 )
 
 func main() {
+
+	cfg := config.MustLoad()
+
+	log := SetupLogger(cfg.Env)
+
+	log.Info("Start", slog.String("env", cfg.Env))
+	log.Debug("debag enable")
 
 	repo := repository.NewInMemoryRepo()
 	svc := service.NewURLService(repo)
@@ -25,17 +37,32 @@ func main() {
 	webHandler := web.NewWebHandler(svc, shortener.GenerateID)
 
 	r := chi.NewRouter()
-	r.Use(middleware.RequestID)
-	r.Use(middleware.RealIP)
-	r.Use(middleware.Logger)
-	r.Use(middleware.Recoverer)
-	r.Use(middleware.Timeout(30 * time.Second))
 	r.Post("/shorten", h.ShortenURL)
 	r.Get("/{id}", h.Redirect)
 
 	r.Get("/", webHandler.Home)
 	r.Post("/shorten-web", webHandler.ShortenWeb)
 
-	log.Println("Server is running on :8080")
 	http.ListenAndServe(":8080", r)
+}
+
+func SetupLogger(env string) *slog.Logger {
+	var log *slog.Logger
+
+	switch env {
+	case envLocal:
+		log = slog.New(
+			slog.NewTextHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}),
+		)
+	case envDev:
+		log = slog.New(
+			slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelDebug}),
+		)
+	case envProd:
+		log = slog.New(
+			slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: slog.LevelInfo}),
+		)
+	}
+
+	return log
 }
