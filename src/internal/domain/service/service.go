@@ -19,7 +19,7 @@ func NewURLService(repo Repository) *URLService {
 
 func (s *URLService) Shorten(original string, generateID func() string) (string, error) {
 	id := generateID()
-	url := model.URL{ID: id, Original: original}
+	url := model.URL{ID: id, OriginalURL: original}
 	if err := s.repo.Save(url); err != nil {
 		return "", err
 	}
@@ -31,5 +31,5 @@ func (s *URLService) Resolve(id string) (string, bool) {
 	if !ok {
 		return "", false
 	}
-	return url.Original, true
+	return url.OriginalURL, true
 }

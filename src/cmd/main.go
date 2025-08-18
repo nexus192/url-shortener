@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 
+	"url-shortener/cmd/adapter"
 	"url-shortener/config"
 	"url-shortener/internal/data/repository"
 	"url-shortener/internal/domain/service"
@@ -26,12 +27,17 @@ func main() {
 	cfg := config.MustLoad()
 
 	log := SetupLogger(cfg.Env)
-
 	log.Info("Start", slog.String("env", cfg.Env))
 	log.Debug("debag enable")
 
-	repo := repository.NewInMemoryRepo()
-	svc := service.NewURLService(repo)
+	repo, err := repository.NewPostgresRepo(cfg.DatabaseURL, log)
+	if err != nil {
+		log.Error("cannot connect to db", slog.Any("err", err))
+		return
+	}
+	adaRepo := &adapter.PostgresAdapter{Repo: repo}
+
+	svc := service.NewURLService(adaRepo)
 	h := handler.New(svc, shortener.GenerateID)
 
 	webHandler := web.NewWebHandler(svc, shortener.GenerateID)
