@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"time"
-	"url-shortener/internal/data/model"
+	"url-shortener/src/internal/data/model"
 
 	"log/slog"
 

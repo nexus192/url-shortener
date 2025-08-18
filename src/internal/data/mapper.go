@@ -2,8 +2,8 @@ package data
 
 import (
 	"time"
-	dataModel "url-shortener/internal/data/model"
-	domainModel "url-shortener/internal/domain/model"
+	dataModel "url-shortener/src/internal/data/model"
+	domainModel "url-shortener/src/internal/domain/model"
 )
 
 func ToData(u domainModel.URL) dataModel.URLData {

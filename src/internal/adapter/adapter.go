@@ -1,9 +1,9 @@
 package adapter
 
 import (
-	"url-shortener/internal/data"
-	"url-shortener/internal/data/repository"
-	"url-shortener/internal/domain/model"
+	"url-shortener/src/internal/data"
+	"url-shortener/src/internal/data/repository"
+	"url-shortener/src/internal/domain/model"
 )
 
 type PostgresAdapter struct {

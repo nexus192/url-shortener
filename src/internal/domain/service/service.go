@@ -1,6 +1,6 @@
 package service
 
-import "url-shortener/internal/domain/model"
+import "url-shortener/src/internal/domain/model"
 
 // Repository — интерфейс для слоя данных
 type Repository interface {

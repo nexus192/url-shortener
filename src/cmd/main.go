@@ -5,13 +5,13 @@ import (
 	"net/http"
 	"os"
 
-	"url-shortener/config"
-	"url-shortener/internal/adapter"
-	"url-shortener/internal/data/repository"
-	"url-shortener/internal/domain/service"
-	"url-shortener/internal/handler"
-	"url-shortener/internal/web"
-	"url-shortener/pkg/shortener"
+	"url-shortener/src/config"
+	"url-shortener/src/internal/adapter"
+	"url-shortener/src/internal/data/repository"
+	"url-shortener/src/internal/domain/service"
+	"url-shortener/src/internal/handler"
+	"url-shortener/src/internal/web"
+	"url-shortener/src/pkg/shortener"
 
 	"github.com/go-chi/chi/v5"
 )

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"url-shortener/internal/domain/service"
+	"url-shortener/src/internal/domain/service"
 
 	"github.com/go-chi/chi/v5"
 )

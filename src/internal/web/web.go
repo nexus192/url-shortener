@@ -3,7 +3,7 @@ package web
 import (
 	"html/template"
 	"net/http"
-	"url-shortener/internal/domain/service"
+	"url-shortener/src/internal/domain/service"
 )
 
 type WebHandler struct {
