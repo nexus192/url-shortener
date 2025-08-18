@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"os"
 
-	"url-shortener/cmd/adapter"
 	"url-shortener/config"
+	"url-shortener/internal/adapter"
 	"url-shortener/internal/data/repository"
 	"url-shortener/internal/domain/service"
 	"url-shortener/internal/handler"
