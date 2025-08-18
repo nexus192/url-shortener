@@ -11,11 +11,6 @@ import (
 	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
-type Repository interface {
-	Save(url model.URLData) error
-	Find(id string) (model.URLData, bool)
-}
-
 type PostgresRepo struct {
 	db  *sql.DB
 	log *slog.Logger
